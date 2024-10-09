@@ -3,8 +3,10 @@ import { z } from 'zod';
 export const CreateTransactionSchema = z.object({
   amount: z.coerce.number().positive().multipleOf(0.01),
   description: z.string().optional(),
-  date: z.coerce.date(),
-  category: z.union([z.literal('income'), z.literal('expense')]),
+  date: z.coerce.date().refine(date => date >= new Date(), {
+    message: "Date cannot be in the past",
+  }),
+  category: z.string(),
   type: z.union([z.literal("income"), z.literal("expense")]),
 });
 
