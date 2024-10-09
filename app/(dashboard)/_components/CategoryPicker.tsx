@@ -12,7 +12,7 @@ import { TransactionType } from '@/lib/types';
 import { Category } from '@prisma/client';
 import { PopoverContent } from '@radix-ui/react-popover';
 import { useQuery } from '@tanstack/react-query';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import CreateCategoryDialog from './CreateCategoryDialog';
 import { CommandGroup, CommandItem } from 'cmdk';
 import { Check } from 'lucide-react';
@@ -20,11 +20,17 @@ import { cn } from '@/lib/utils';
 
 interface Props {
   type: TransactionType;
+  onChange: (value: string) => void;
 }
 
-const CategoryPicker = ({ type }: Props) => {
+const CategoryPicker = ({ type, onChange }: Props) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
+
+  useEffect(() => {
+    if(!value) return;
+    onChange(value); 
+  }, [onChange, value]);
 
   const categoriesQuery = useQuery({
     queryKey: ['categories', type],
@@ -67,10 +73,7 @@ const CategoryPicker = ({ type }: Props) => {
           }}
         >
           <CommandInput placeholder="Search category" />
-          <CreateCategoryDialog
-            type={type}
-            successCallback={successCallback}
-          />
+          <CreateCategoryDialog type={type} successCallback={successCallback} />
           <CommandEmpty>
             <p>Category not found</p>
             <p className="text-xs text-muted-foreground">
