@@ -7,6 +7,7 @@ import { DateRangePicker } from '@/components/ui/date-range-picker';
 import { MAX_DATE_RANGE_DAYS } from '@/lib/constants';
 import { toast } from 'sonner';
 import StatsCards from './StatsCards';
+import CategoriesStats from './CategoriesStats';
 
 const Overview = ({ userSettings }: { userSettings: UserSettings }) => {
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
@@ -43,6 +44,12 @@ const Overview = ({ userSettings }: { userSettings: UserSettings }) => {
       <div className="flex justify-center">
         <div className="container flex w-full flex-col gap-2">
           <StatsCards
+            userSettings={userSettings}
+            from={dateRange.from}
+            to={dateRange.to}
+          />
+
+          <CategoriesStats
             userSettings={userSettings}
             from={dateRange.from}
             to={dateRange.to}
