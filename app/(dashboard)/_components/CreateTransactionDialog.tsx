@@ -84,23 +84,26 @@ const CreateTransactionDialog = ({ trigger, type }: Props) => {
       });
 
       queryClient.invalidateQueries({
-        queryKey: ["overview"],
-      })
+        queryKey: ['overview'],
+      });
 
       setOpen((prev) => !prev);
     },
   });
 
-  const onSubmit = useCallback((values: CreateTransactionSchemaType) => {
-    toast.loading("Creating transaction...", {
-      id: "create-transaction"
-    });
+  const onSubmit = useCallback(
+    (values: CreateTransactionSchemaType) => {
+      toast.loading('Creating transaction...', {
+        id: 'create-transaction',
+      });
 
-    mutate({
-      ...values,
-      date: DateToUTCDate(values.date),
-    })
-  }, [mutate])
+      mutate({
+        ...values,
+        date: DateToUTCDate(values.date),
+      });
+    },
+    [mutate]
+  );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -160,17 +163,22 @@ const CreateTransactionDialog = ({ trigger, type }: Props) => {
                 control={form.control}
                 name="category"
                 render={({ field }) => (
-                  <FormItem className='flex flex-col'>
+                  <FormItem className="flex flex-col">
                     <FormLabel>Category</FormLabel>
                     <FormControl>
                       <CategoryPicker
                         type={type}
-                        onChange={handleCategoryChange}
+                        value={field.value} // Bind the selected value
+                        onChange={(value) => {
+                          field.onChange(value); // Update the form state
+                          handleCategoryChange(value); // Keep your existing handler
+                        }}
                       />
                     </FormControl>
                     <FormDescription>
                       Select a category for this transaction
                     </FormDescription>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -179,7 +187,7 @@ const CreateTransactionDialog = ({ trigger, type }: Props) => {
                 control={form.control}
                 name="date"
                 render={({ field }) => (
-                  <FormItem className='flex flex-col'>
+                  <FormItem className="flex flex-col">
                     <FormLabel>Transaction date</FormLabel>
                     <FormControl>
                       <Popover>
@@ -209,8 +217,8 @@ const CreateTransactionDialog = ({ trigger, type }: Props) => {
                           <Calendar
                             mode="single"
                             selected={field.value}
-                            onSelect={value => {
-                              if(!value) return;
+                            onSelect={(value) => {
+                              if (!value) return;
                               console.log('@@CALENDAR', value);
                               field.onChange(value);
                             }}

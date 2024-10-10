@@ -12,7 +12,7 @@ import { TransactionType } from '@/lib/types';
 import { Category } from '@prisma/client';
 import { PopoverContent } from '@radix-ui/react-popover';
 import { useQuery } from '@tanstack/react-query';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import CreateCategoryDialog from './CreateCategoryDialog';
 import { CommandGroup, CommandItem } from 'cmdk';
 import { Check } from 'lucide-react';
@@ -20,17 +20,20 @@ import { cn } from '@/lib/utils';
 
 interface Props {
   type: TransactionType;
+  value?: string; // Optional value prop
   onChange: (value: string) => void;
 }
 
-const CategoryPicker = ({ type, onChange }: Props) => {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState('');
+const CategoryPicker = ({ type, onChange, value: propValue }: Props) => {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(propValue || '');
 
+  // Update local state when the prop value changes
   useEffect(() => {
-    if(!value) return;
-    onChange(value); 
-  }, [onChange, value]);
+    if (propValue !== value) {
+      setValue(propValue || '');
+    }
+  }, [propValue]);
 
   const categoriesQuery = useQuery({
     queryKey: ['categories', type],
@@ -45,10 +48,17 @@ const CategoryPicker = ({ type, onChange }: Props) => {
   const successCallback = useCallback(
     (category: Category) => {
       setValue(category.name);
-      setOpen((prev) => !prev);
+      onChange(category.name); // Notify parent of change
+      setOpen(false);
     },
-    [setOpen, setValue]
+    [onChange]
   );
+
+  const handleCategorySelect = (category: Category) => {
+    setValue(category.name);
+    onChange(category.name); // Notify parent of change
+    setOpen(false);
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -86,11 +96,8 @@ const CategoryPicker = ({ type, onChange }: Props) => {
                 categoriesQuery.data.map((category: Category) => (
                   <CommandItem
                     key={category.name}
-                    onSelect={() => {
-                      setValue(category.name);
-                      setOpen(false);
-                    }}
-                    className="flex items-center hover:opacity-50 cursor-pointer" // Added hover effect
+                    onSelect={() => handleCategorySelect(category)}
+                    className="flex items-center hover:opacity-50 cursor-pointer"
                   >
                     <CategoryRow category={category} />
                     <Check
