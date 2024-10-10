@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 {
   "extends": ["next/core-web-vitals", "next/typescript"]
 }

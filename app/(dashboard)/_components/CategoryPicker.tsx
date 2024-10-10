@@ -33,7 +33,7 @@ const CategoryPicker = ({ type, onChange, value: propValue }: Props) => {
     if (propValue !== value) {
       setValue(propValue || '');
     }
-  }, [propValue]);
+  }, [propValue, value]);
 
   const categoriesQuery = useQuery({
     queryKey: ['categories', type],
