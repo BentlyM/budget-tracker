@@ -69,8 +69,6 @@ function CategoriesCard({
     0
   );
 
-  console.log(filteredData);
-
   return (
     <Card className="h-80 w-full col-span-6">
       <CardHeader>
