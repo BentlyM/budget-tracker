@@ -40,8 +40,10 @@ const TransactionsPage = () => {
           />
         </div>
       </div>
-      <div className='container'>
-        <TransactionTable from={dateRange.from} to={dateRange.to} />
+      <div className='flex justify-center'>
+        <div className="container">
+          <TransactionTable from={dateRange.from} to={dateRange.to} />
+        </div>
       </div>
     </>
   );
