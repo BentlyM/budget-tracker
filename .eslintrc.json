@@ -1,18 +1,5 @@
+/* eslint-disable */
+
 {
-  "extends": ["next/core-web-vitals", "next/typescript"],
-  "overrides": [
-    {
-      "files": ["./components/**/*.{js,jsx,ts,tsx}"],
-      "rules": {
-        "react/prop-types": "off", // Disable prop-types for TypeScript
-        "react/jsx-filename-extension": [
-          "warn",
-          { "extensions": [".jsx", ".tsx"] }
-        ],
-        "no-unused-vars": "warn", // Warn for unused variables
-        "react-hooks/rules-of-hooks": "error", // Check hooks rules
-        "react-hooks/exhaustive-deps": "warn" // Warn for missing dependencies in hooks
-      }
-    }
-  ]
+  "extends": ["next/core-web-vitals", "next/typescript"]
 }
