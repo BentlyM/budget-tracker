@@ -87,7 +87,7 @@ const CreateTransactionDialog = ({ trigger, type }: Props) => {
         queryKey: ["overview"],
       })
 
-      setOpen((prev) => !prev); // might just start settings this to false
+      setOpen((prev) => !prev);
     },
   });
 

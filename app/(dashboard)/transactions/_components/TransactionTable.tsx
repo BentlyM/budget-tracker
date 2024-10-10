@@ -152,6 +152,7 @@ const TransactionTable = ({ from, to }: Props) => {
   });
 
   const handleExportCSV = (data: any[]) => {
+    if(data.length === 0) return;
     const csv = generateCsv(csvConfig)(data);
     download(csvConfig)(csv);
   };
