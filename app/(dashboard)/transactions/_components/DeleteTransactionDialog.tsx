@@ -31,7 +31,7 @@ const DeleteTransactionDialog = ({ open, setOpen, transactionId }: Props) => {
         id: transactionId,
       });
       await queryClient.invalidateQueries({
-        queryKey: ['transactions'],
+        queryKey: ['transaction'],
       });
     },
     onError: () => {
