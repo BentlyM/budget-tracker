@@ -22,12 +22,15 @@ const Page = async () => {
   if (!userSettings) {
     redirect('/wizard');
   }
+
+  const match = user!.primaryEmailAddress!.emailAddress.match(/^(.+)@/);
+  const username = match![1];
   return (
     <div className="h-full bg-background">
       <div className="border-b bg-card flex justify-center">
         <div className="container flex flex-wrap items-center justify-between gap-6 py-8">
           <p className="text-3x1 font-bold">
-            Hello, {user.firstName || 'anonymous'}!
+            Hello, {user.firstName || username || 'anonymous'}!
           </p>
 
           <div className="flex items-center gap-3">
